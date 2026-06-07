@@ -1,0 +1,18 @@
+PROJECT STABILIZATION FIXES
+
+Changes applied:
+- Fixed broken AuthContext path
+- Fixed Firebase context imports
+- Added AuthProvider to app root
+- Added Login route
+- Protected Admin route
+- Cleaned broken context structure
+- Prepared app for clean npm install
+
+IMPORTANT:
+Delete node_modules before running.
+
+Run:
+
+npm install
+npm run dev

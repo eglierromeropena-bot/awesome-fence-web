@@ -1,0 +1,12 @@
+VISUAL OFFERS UPDATE
+
+Added:
+- New premium visual Offer section
+- Learn More modal
+- Manage Services admin visual page
+- Modern cards
+- Hover animations
+- Quote CTA button
+
+Next:
+Import OfferSection.jsx into your homepage where Offers currently exists.
