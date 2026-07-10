@@ -250,9 +250,15 @@ export default function App() {
 
   };
 
+  const scrollToGallery = () => {
+    document
+      .getElementById("gallery")
+      ?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
 
-    <div className="bg-[#f4f4f4] overflow-x-hidden font-sans text-gray-900">
+    <div className="bg-[#f4f4f4] overflow-x-hidden font-sans text-gray-900 scroll-smooth">
 
       <ChatBox />
 
@@ -413,11 +419,24 @@ export default function App() {
 
             </a>
 
-            <button className="bg-white/10 backdrop-blur-xl border border-white/20 px-9 py-5 rounded-full text-lg font-bold hover:bg-white hover:text-black transition">
+            <button
+              type="button"
+              onClick={scrollToGallery}
+              className="bg-white/10 backdrop-blur-xl border border-white/20 px-9 py-5 rounded-full text-lg font-bold hover:bg-white hover:text-black transition"
+            >
 
               {t.projects}
 
             </button>
+
+            <a
+              href="https://wa.me/5024166908"
+              target="_blank"
+              rel="noreferrer"
+              className="bg-[#25D366] text-white px-9 py-5 rounded-full text-lg font-bold shadow-2xl hover:scale-105 transition"
+            >
+              WhatsApp
+            </a>
 
           </div>
 
@@ -490,7 +509,11 @@ export default function App() {
 
                   </p>
 
-                  <button className="bg-blue-900 text-white px-6 py-3 rounded-full font-bold shadow-xl hover:scale-105 transition">
+                  <button
+                    type="button"
+                    onClick={scrollToGallery}
+                    className="bg-blue-900 text-white px-6 py-3 rounded-full font-bold shadow-xl hover:scale-105 transition"
+                  >
 
                     {t.learnMore}
 
