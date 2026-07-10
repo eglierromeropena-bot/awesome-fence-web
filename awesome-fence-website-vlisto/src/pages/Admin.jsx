@@ -280,6 +280,9 @@ export default function Admin() {
       navigate("/login");
     } catch (error) {
       console.error("Failed to sign out:", error);
+      alert(
+        "No se pudo cerrar la sesión. Inténtalo de nuevo."
+      );
     }
   };
 

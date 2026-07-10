@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import ChatBox from "./components/ChatBox";
 
@@ -13,7 +13,11 @@ import {
 } from "firebase/firestore";
 
 export default function App() {
-  const whatsappNumber = "5024166908";
+  const whatsappNumber =
+    import.meta.env.VITE_WHATSAPP_NUMBER ||
+    "5024166908";
+
+  const gallerySectionRef = useRef(null);
 
   const [language, setLanguage] = useState("EN");
 
@@ -253,7 +257,7 @@ export default function App() {
 
   const scrollToGallery = () => {
     const gallerySection =
-      document.getElementById("gallery");
+      gallerySectionRef.current;
 
     if (!gallerySection) {
       console.warn(
@@ -545,6 +549,7 @@ export default function App() {
       {/* GALLERY */}
       <section
         id="gallery"
+        ref={gallerySectionRef}
         className="py-28 bg-white"
       >
 
