@@ -251,9 +251,19 @@ export default function App() {
   };
 
   const scrollToGallery = () => {
-    document
-      .getElementById("gallery")
-      ?.scrollIntoView({ behavior: "smooth" });
+    const gallerySection =
+      document.getElementById("gallery");
+
+    if (!gallerySection) {
+      console.warn(
+        "Gallery section not found for scrolling."
+      );
+      return;
+    }
+
+    gallerySection.scrollIntoView({
+      behavior: "smooth",
+    });
   };
 
   return (

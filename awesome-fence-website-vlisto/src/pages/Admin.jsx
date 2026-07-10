@@ -280,7 +280,7 @@ export default function Admin() {
       await signOut(auth);
       navigate("/login");
     } catch (error) {
-      console.log(error);
+      console.error("Failed to sign out:", error);
     }
   };
 
