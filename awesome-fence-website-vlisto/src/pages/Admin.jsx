@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { onAuthStateChanged } from "firebase/auth";
+import { signOut } from "firebase/auth";
 
 import { auth } from "../firebase";
 
@@ -27,6 +27,7 @@ import {
 } from "firebase/storage";
 
 export default function Admin() {
+  const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
 
@@ -273,9 +274,21 @@ export default function Admin() {
 
   };
 
+  const closeAdmin = async () => {
+    try {
+      await signOut(auth);
+      navigate("/login");
+    } catch (error) {
+      console.error("Failed to sign out:", error);
+      alert(
+        "No se pudo cerrar la sesión. Inténtalo de nuevo."
+      );
+    }
+  };
+
   return (
 
-    <div className="h-screen overflow-hidden bg-black text-white">
+    <div className="min-h-screen bg-black text-white lg:h-screen lg:overflow-hidden">
 
       {/* BACKGROUND */}
       <div className="fixed inset-0 bg-gradient-to-br from-black via-zinc-950 to-blue-950"></div>
@@ -286,14 +299,14 @@ export default function Admin() {
       <div className="fixed bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-cyan-500 rounded-full blur-[180px] opacity-20"></div>
 
       {/* MAIN */}
-      <div className="relative z-10 h-screen p-6 flex flex-col">
+      <div className="relative z-10 min-h-screen p-4 md:p-6 flex flex-col lg:h-screen">
 
         {/* HEADER */}
         <div className="mb-6 flex items-start justify-between gap-4">
 
           <div>
 
-            <h1 className="text-6xl font-black tracking-[0.2em]">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-[0.2em]">
 
               ADMIN CONTROL
 
@@ -308,7 +321,7 @@ export default function Admin() {
           </div>
 
           <button
-            onClick={() => navigate("/")}
+            onClick={closeAdmin}
             className="w-14 h-14 rounded-full border border-white/10 bg-white/10 hover:bg-red-600 transition flex items-center justify-center text-2xl font-black"
             title="Cerrar Admin"
           >
@@ -318,10 +331,10 @@ export default function Admin() {
         </div>
 
         {/* GRID */}
-        <div className="flex-1 min-h-0 grid grid-cols-12 gap-6">
+        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
           {/* SIDEBAR */}
-          <div className="col-span-3 min-h-0 rounded-[35px] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden flex flex-col">
+          <div className="col-span-1 lg:col-span-3 min-h-0 rounded-[35px] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden flex flex-col">
 
             <div className="p-6 border-b border-white/10">
 
@@ -397,7 +410,7 @@ export default function Admin() {
           </div>
 
           {/* CHAT */}
-          <div className="col-span-6 min-h-0 rounded-[35px] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden flex flex-col">
+          <div className="col-span-1 lg:col-span-6 min-h-[420px] lg:min-h-0 rounded-[35px] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden flex flex-col">
 
             {/* TOP */}
             <div className="p-6 border-b border-white/10 flex items-center justify-between">
@@ -498,7 +511,7 @@ export default function Admin() {
           </div>
 
           {/* RIGHT */}
-          <div className="col-span-3 min-h-0 flex flex-col gap-6">
+          <div className="col-span-1 lg:col-span-3 min-h-0 flex flex-col gap-6">
 
             {/* REQUESTS */}
             <div className="flex-1 min-h-0 rounded-[35px] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden flex flex-col">
