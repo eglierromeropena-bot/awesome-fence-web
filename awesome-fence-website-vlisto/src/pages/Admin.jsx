@@ -27,7 +27,6 @@ import {
 } from "firebase/storage";
 
 export default function Admin() {
-
   const navigate = useNavigate();
 
   const [message, setMessage] = useState("");

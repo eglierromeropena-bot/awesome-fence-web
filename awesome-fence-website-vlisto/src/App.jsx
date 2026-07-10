@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 
 export default function App() {
+  const whatsappNumber = "5024166908";
 
   const [language, setLanguage] = useState("EN");
 
@@ -440,7 +441,7 @@ export default function App() {
             </button>
 
             <a
-              href="https://wa.me/5024166908"
+              href={`https://wa.me/${whatsappNumber}`}
               target="_blank"
               rel="noreferrer"
               className="bg-[#25D366] text-white px-9 py-5 rounded-full text-lg font-bold shadow-2xl hover:scale-105 transition"
