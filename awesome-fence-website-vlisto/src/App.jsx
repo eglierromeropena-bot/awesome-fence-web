@@ -211,10 +211,14 @@ export default function App() {
 
   const t = translations[language];
 
-  const scrollToGallery = () => {
-    document
-      .getElementById("gallery")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const scrollToGallery = (event) => {
+    event.preventDefault();
+    const gallerySection = document.getElementById("gallery");
+    if (!gallerySection) {
+      window.location.hash = "gallery";
+      return;
+    }
+    gallerySection.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   // CONTACT FORM -> FIREBASE
@@ -496,14 +500,17 @@ export default function App() {
 
                   </p>
 
-                  <button
+                  <a
+                    href="#gallery"
                     onClick={scrollToGallery}
-                    className="bg-blue-900 text-white px-6 py-3 rounded-full font-bold shadow-xl hover:scale-105 transition"
+                    role="button"
+                    aria-label={`${t.learnMore} - ${t.gallery}`}
+                    className="inline-block bg-blue-900 text-white px-6 py-3 rounded-full font-bold shadow-xl hover:scale-105 transition"
                   >
 
                     {t.learnMore}
 
-                  </button>
+                  </a>
 
                 </div>
 
