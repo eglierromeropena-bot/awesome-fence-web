@@ -38,18 +38,24 @@ export default function ChatBox() {
   // ESCUCHAR MENSAJES EN TIEMPO REAL
   useEffect(() => {
 
+    const normalizedChatId = String(chatId || "").trim();
+
     const q = query(
       collection(db, "messages"),
-      where("chatId", "==", String(chatId)),
       orderBy("createdAt", "asc")
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
 
-      const loadedMessages = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const loadedMessages = snapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        .filter(
+          (msg) =>
+            String(msg.chatId || "").trim() === normalizedChatId
+        );
 
       setMessages(loadedMessages);
 

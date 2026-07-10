@@ -211,6 +211,12 @@ export default function App() {
 
   const t = translations[language];
 
+  const scrollToGallery = () => {
+    document
+      .getElementById("gallery")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   // CONTACT FORM -> FIREBASE
   const sendContactForm = async (e) => {
 
@@ -413,11 +419,26 @@ export default function App() {
 
             </a>
 
-            <button className="bg-white/10 backdrop-blur-xl border border-white/20 px-9 py-5 rounded-full text-lg font-bold hover:bg-white hover:text-black transition">
+            <a
+              href="#gallery"
+              className="bg-white/10 backdrop-blur-xl border border-white/20 px-9 py-5 rounded-full text-lg font-bold hover:bg-white hover:text-black transition inline-flex items-center"
+            >
 
               {t.projects}
 
-            </button>
+            </a>
+
+            <a
+              href="https://wa.me/5024166908"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-3 rounded-full bg-green-500 px-7 py-5 text-lg font-bold text-white shadow-2xl transition hover:scale-105"
+            >
+              <svg viewBox="0 0 24 24" className="h-6 w-6 fill-current" aria-hidden="true">
+                <path d="M12.04 2.5A9.49 9.49 0 0 0 3.2 14.4L2.5 21.5l7.2-1.9a9.51 9.51 0 1 0 4.34-17.1h-.02Zm5.37 13.37a7.8 7.8 0 0 1-4.1 2.3l-.03.01-.03-.02a7.82 7.82 0 0 1-3.6-.8l-.2-.1-4.3 1.1 1.1-4.2-.15-.22a7.82 7.82 0 1 1 10.33 1.93Z"/>
+              </svg>
+              WhatsApp
+            </a>
 
           </div>
 
@@ -490,7 +511,10 @@ export default function App() {
 
                   </p>
 
-                  <button className="bg-blue-900 text-white px-6 py-3 rounded-full font-bold shadow-xl hover:scale-105 transition">
+                  <button
+                    onClick={scrollToGallery}
+                    className="bg-blue-900 text-white px-6 py-3 rounded-full font-bold shadow-xl hover:scale-105 transition"
+                  >
 
                     {t.learnMore}
 

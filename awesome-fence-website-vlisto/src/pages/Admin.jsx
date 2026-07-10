@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 import { auth } from "../firebase";
 
@@ -27,6 +27,8 @@ import {
 } from "firebase/storage";
 
 export default function Admin() {
+
+  const navigate = useNavigate();
 
   const [message, setMessage] = useState("");
 
@@ -160,17 +162,21 @@ export default function Admin() {
   // SEND MESSAGE
   const sendMessage = async () => {
 
-    if (!message.trim()) return;
+    const trimmedMessage = message.trim();
 
-    if (!selectedChat) return;
+    if (!trimmedMessage) return;
+
+    const normalizedChatId = String(selectedChat || "").trim();
+
+    if (!normalizedChatId) return;
 
     await addDoc(collection(db, "messages"), {
 
-      text: message,
+      text: trimmedMessage,
 
       sender: "admin",
 
-      chatId: String(selectedChat),
+      chatId: normalizedChatId,
 
       createdAt: Date.now(),
 
@@ -211,6 +217,15 @@ export default function Admin() {
       doc(db, "contactRequests", id)
     );
 
+  };
+
+  const handleCloseAdmin = async () => {
+    try {
+      await signOut(auth);
+      navigate("/");
+    } catch (error) {
+      alert("No se pudo cerrar la sesión.");
+    }
   };
 
   // UPLOAD IMAGE
@@ -275,7 +290,7 @@ export default function Admin() {
 
   return (
 
-    <div className="h-screen overflow-hidden bg-black text-white">
+    <div className="min-h-screen overflow-x-hidden bg-black text-white">
 
       {/* BACKGROUND */}
       <div className="fixed inset-0 bg-gradient-to-br from-black via-zinc-950 to-blue-950"></div>
@@ -286,20 +301,20 @@ export default function Admin() {
       <div className="fixed bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-cyan-500 rounded-full blur-[180px] opacity-20"></div>
 
       {/* MAIN */}
-      <div className="relative z-10 h-screen p-6 flex flex-col">
+      <div className="relative z-10 min-h-screen p-4 sm:p-6 flex flex-col">
 
         {/* HEADER */}
-        <div className="mb-6 flex items-start justify-between gap-4">
+        <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
 
-          <div>
+          <div className="min-w-0">
 
-            <h1 className="text-6xl font-black tracking-[0.2em]">
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-black tracking-[0.2em] break-words">
 
               ADMIN CONTROL
 
             </h1>
 
-            <p className="text-zinc-400 mt-2 uppercase tracking-[0.3em] text-sm">
+            <p className="text-zinc-400 mt-2 uppercase tracking-[0.3em] text-xs sm:text-sm">
 
               Premium Control Panel
 
@@ -308,8 +323,8 @@ export default function Admin() {
           </div>
 
           <button
-            onClick={() => navigate("/")}
-            className="w-14 h-14 rounded-full border border-white/10 bg-white/10 hover:bg-red-600 transition flex items-center justify-center text-2xl font-black"
+            onClick={handleCloseAdmin}
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-white/10 bg-white/10 hover:bg-red-600 transition flex items-center justify-center text-2xl font-black self-start"
             title="Cerrar Admin"
           >
             ×
@@ -318,14 +333,14 @@ export default function Admin() {
         </div>
 
         {/* GRID */}
-        <div className="flex-1 min-h-0 grid grid-cols-12 gap-6">
+        <div className="flex-1 min-h-0 grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-6">
 
           {/* SIDEBAR */}
-          <div className="col-span-3 min-h-0 rounded-[35px] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden flex flex-col">
+          <div className="xl:col-span-3 min-h-[280px] rounded-[35px] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden flex flex-col">
 
-            <div className="p-6 border-b border-white/10">
+            <div className="p-4 sm:p-6 border-b border-white/10">
 
-              <h2 className="text-3xl font-black">
+              <h2 className="text-2xl sm:text-3xl font-black">
 
                 Conversaciones
 
@@ -397,20 +412,20 @@ export default function Admin() {
           </div>
 
           {/* CHAT */}
-          <div className="col-span-6 min-h-0 rounded-[35px] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden flex flex-col">
+          <div className="xl:col-span-6 min-h-[420px] rounded-[35px] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden flex flex-col">
 
             {/* TOP */}
-            <div className="p-6 border-b border-white/10 flex items-center justify-between">
+            <div className="p-4 sm:p-6 border-b border-white/10 flex items-center justify-between gap-3">
 
               <div>
 
-                <h2 className="text-4xl font-black">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black">
 
                   Live Chat
 
                 </h2>
 
-                <p className="text-zinc-400 mt-1">
+                <p className="text-zinc-400 mt-1 text-sm sm:text-base">
 
                   Tiempo real
 
@@ -423,7 +438,7 @@ export default function Admin() {
             </div>
 
             {/* MESSAGES */}
-            <div className="flex-1 overflow-y-auto p-8 flex flex-col gap-6">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-4 sm:gap-6">
 
               {messages.length === 0 && (
 
@@ -439,7 +454,7 @@ export default function Admin() {
 
                 <div
                   key={msg.id}
-                  className={`max-w-[75%] p-5 rounded-[30px] border ${
+                  className={`max-w-[90%] sm:max-w-[75%] p-4 sm:p-5 rounded-[24px] sm:rounded-[30px] border ${
                     msg.sender === "admin"
                       ? "self-end bg-gradient-to-r from-blue-700 to-cyan-500 border-cyan-300"
                       : "self-start bg-white/10 border-white/10"
@@ -454,7 +469,7 @@ export default function Admin() {
 
                   </div>
 
-                  <div className="text-lg">
+                  <div className="text-sm sm:text-lg break-words">
 
                     {msg.text}
 
@@ -469,9 +484,9 @@ export default function Admin() {
             </div>
 
             {/* INPUT */}
-            <div className="p-6 border-t border-white/10">
+            <div className="p-4 sm:p-6 border-t border-white/10">
 
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
 
                 <input
                   value={message}
@@ -479,12 +494,12 @@ export default function Admin() {
                     setMessage(e.target.value)
                   }
                   placeholder="Responder..."
-                  className="flex-1 rounded-3xl bg-white/10 border border-white/10 px-6 py-5 outline-none"
+                  className="flex-1 rounded-3xl bg-white/10 border border-white/10 px-4 sm:px-6 py-3 sm:py-5 outline-none"
                 />
 
                 <button
                   onClick={sendMessage}
-                  className="px-10 rounded-3xl font-black bg-gradient-to-r from-blue-700 to-cyan-500"
+                  className="px-6 sm:px-10 py-3 rounded-3xl font-black bg-gradient-to-r from-blue-700 to-cyan-500"
                 >
 
                   Enviar
@@ -498,14 +513,14 @@ export default function Admin() {
           </div>
 
           {/* RIGHT */}
-          <div className="col-span-3 min-h-0 flex flex-col gap-6">
+          <div className="xl:col-span-3 min-h-0 flex flex-col gap-4 sm:gap-6">
 
             {/* REQUESTS */}
             <div className="flex-1 min-h-0 rounded-[35px] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden flex flex-col">
 
-              <div className="p-6 border-b border-white/10">
+              <div className="p-4 sm:p-6 border-b border-white/10">
 
-                <h2 className="text-3xl font-black">
+                <h2 className="text-2xl sm:text-3xl font-black">
 
                   Solicitudes
 
@@ -513,7 +528,7 @@ export default function Admin() {
 
               </div>
 
-              <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-5">
+              <div className="flex-1 overflow-y-auto p-4 sm:p-5 flex flex-col gap-4 sm:gap-5">
 
                 {requests.map((req) => (
 
@@ -560,11 +575,11 @@ export default function Admin() {
             </div>
 
             {/* GALLERY */}
-            <div className="h-[420px] min-h-0 rounded-[35px] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden flex flex-col">
+            <div className="min-h-[320px] sm:h-[360px] lg:h-[420px] min-h-0 rounded-[35px] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden flex flex-col">
 
-              <div className="p-6 border-b border-white/10">
+              <div className="p-4 sm:p-6 border-b border-white/10">
 
-                <h2 className="text-3xl font-black">
+                <h2 className="text-2xl sm:text-3xl font-black">
 
                   Contenido
 
@@ -578,10 +593,10 @@ export default function Admin() {
 
               </div>
 
-              <div className="flex-1 overflow-y-auto p-6">
+              <div className="flex-1 overflow-y-auto p-4 sm:p-6">
 
                 {/* UPLOAD */}
-                <label className="block cursor-pointer rounded-3xl border border-dashed border-cyan-400 p-6 text-center text-cyan-300 hover:bg-cyan-500/10 transition">
+                <label className="block cursor-pointer rounded-3xl border border-dashed border-cyan-400 p-4 sm:p-6 text-center text-cyan-300 hover:bg-cyan-500/10 transition text-sm sm:text-base">
 
                   Seleccionar Fotos
 
