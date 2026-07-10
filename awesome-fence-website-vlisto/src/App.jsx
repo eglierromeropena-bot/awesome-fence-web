@@ -211,6 +211,12 @@ export default function App() {
 
   const t = translations[language];
 
+  const scrollToGallery = () => {
+    document
+      .getElementById("gallery")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   // CONTACT FORM -> FIREBASE
   const sendContactForm = async (e) => {
 
@@ -490,7 +496,10 @@ export default function App() {
 
                   </p>
 
-                  <button className="bg-blue-900 text-white px-6 py-3 rounded-full font-bold shadow-xl hover:scale-105 transition">
+                  <button
+                    onClick={scrollToGallery}
+                    className="bg-blue-900 text-white px-6 py-3 rounded-full font-bold shadow-xl hover:scale-105 transition"
+                  >
 
                     {t.learnMore}
 
