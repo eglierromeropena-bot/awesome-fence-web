@@ -413,11 +413,25 @@ export default function App() {
 
             </a>
 
-            <button className="bg-white/10 backdrop-blur-xl border border-white/20 px-9 py-5 rounded-full text-lg font-bold hover:bg-white hover:text-black transition">
+            <a
+              href="#gallery"
+              className="bg-white/10 backdrop-blur-xl border border-white/20 px-9 py-5 rounded-full text-lg font-bold hover:bg-white hover:text-black transition"
+            >
 
               {t.projects}
 
-            </button>
+            </a>
+
+            <a
+              href="https://wa.me/5024166908"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#25D366] text-white px-9 py-5 rounded-full text-lg font-bold shadow-2xl hover:scale-105 transition"
+            >
+
+              WhatsApp
+
+            </a>
 
           </div>
 
@@ -490,11 +504,14 @@ export default function App() {
 
                   </p>
 
-                  <button className="bg-blue-900 text-white px-6 py-3 rounded-full font-bold shadow-xl hover:scale-105 transition">
+                  <a
+                    href="#gallery"
+                    className="inline-block bg-blue-900 text-white px-6 py-3 rounded-full font-bold shadow-xl hover:scale-105 transition"
+                  >
 
                     {t.learnMore}
 
-                  </button>
+                  </a>
 
                 </div>
 

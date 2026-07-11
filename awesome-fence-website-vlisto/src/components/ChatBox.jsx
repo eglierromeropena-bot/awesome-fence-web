@@ -7,7 +7,6 @@ import {
   onSnapshot,
   query,
   orderBy,
-  where,
 } from "firebase/firestore";
 
 export default function ChatBox() {
@@ -38,18 +37,23 @@ export default function ChatBox() {
   // ESCUCHAR MENSAJES EN TIEMPO REAL
   useEffect(() => {
 
+    const normalizedChatId = String(chatId).trim();
+
     const q = query(
       collection(db, "messages"),
-      where("chatId", "==", String(chatId)),
       orderBy("createdAt", "asc")
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
 
-      const loadedMessages = snapshot.docs.map((doc) => ({
+      const allMessages = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
+
+      const loadedMessages = allMessages.filter(
+        (msg) => String(msg.chatId || "").trim() === normalizedChatId
+      );
 
       setMessages(loadedMessages);
 
@@ -71,13 +75,17 @@ export default function ChatBox() {
   // ENVIAR MENSAJE
   const sendMessage = async () => {
 
-    if (!message.trim()) return;
+    const trimmedMessage = message.trim();
+
+    if (!trimmedMessage) return;
+
+    const normalizedChatId = String(chatId).trim();
 
     await addDoc(collection(db, "messages"), {
 
-      text: message,
+      text: trimmedMessage,
       sender: "client",
-      chatId: String(chatId),
+      chatId: normalizedChatId,
       createdAt: Date.now(),
 
     });

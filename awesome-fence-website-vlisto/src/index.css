@@ -3,7 +3,67 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Cinematic 3-D Admin effects ── */
+@keyframes float-glow {
+  0%, 100% { transform: translateY(0px) scale(1); opacity: 0.18; }
+  50%       { transform: translateY(-30px) scale(1.08); opacity: 0.28; }
+}
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0); }
+  33%      { transform: translate(20px, -20px); }
+  66%      { transform: translate(-15px, 15px); }
+}
+@keyframes scanline {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 0px 0px rgba(0,200,255,0); }
+  50%       { box-shadow: 0 0 18px 4px rgba(0,200,255,0.35); }
+}
+@keyframes title-glow {
+  0%, 100% { text-shadow: 0 0 20px rgba(0,200,255,0.4), 0 0 60px rgba(0,200,255,0.15); }
+  50%       { text-shadow: 0 0 40px rgba(0,200,255,0.7), 0 0 100px rgba(0,200,255,0.3); }
+}
+
+.admin-glow-orb {
+  animation: float-glow 7s ease-in-out infinite, drift 12s ease-in-out infinite;
+}
+.admin-card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(.23,1,.32,1), box-shadow 0.35s ease;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6),
+              0 2px 8px rgba(0,200,255,0.08),
+              inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.admin-card-3d:hover {
+  transform: translateY(-4px) rotateX(1.5deg) rotateY(-1deg);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.7),
+              0 0 30px rgba(0,200,255,0.18),
+              inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.admin-title-glow {
+  animation: title-glow 4s ease-in-out infinite;
+}
+.admin-btn-glow {
+  animation: pulse-border 2.5s ease-in-out infinite;
+}
+.admin-scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
 }
